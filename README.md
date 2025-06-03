@@ -220,3 +220,69 @@ This installation script and guide were created by Dennis from [Lean Code Automa
 ---
 
 By following this guide, you should have a working n8n installation with automatic HTTPS support through Traefik. Happy automating!
+
+
+Türkçe Versiyon
+
+# 🧩 n8n + PostgreSQL + Traefik Kurulumu (Production Ready)
+
+Bu rehber, kendi VPS sunucunuzda n8n'i Traefik reverse proxy ve PostgreSQL veritabanı ile birlikte tam otomatik olarak kurmanızı sağlar. SSL (HTTPS) otomatik olarak Let's Encrypt tarafından alınır.
+
+---
+
+## 🚀 Kurulum
+
+### 1. Terminalden aşağıdaki komutu çalıştırın:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Rarebox/n8n-scripts/master/n8n-pg-install.sh -o n8n-install.sh && chmod +x n8n-install.sh && ./n8n-install.sh
+
+⚙️ Kurulumdan Sonra
+
+2. .env dosyasını düzenleyin
+
+nano ~/n8n-traefik/.env
+
+Aşağıdaki değerleri kendi domain bilgilerinize göre güncelleyin:
+
+DOMAIN_NAME=example.com
+SUBDOMAIN=n8n
+SSL_EMAIL=admin@example.com
+GENERIC_TIMEZONE=Europe/Istanbul
+
+Bu ayarlarla n8n arayüzü şu adresten çalışacaktır: https://n8n.example.com
+
+3. Servisleri başlatın
+
+cd ~/n8n-traefik
+docker compose up -d
+
+4. SSL durumu ve logları kontrol edin
+
+docker compose logs -f traefik
+
+Aşağıdakine benzer bir satır görmelisiniz:
+
+Server configured with certificate for domain n8n.example.com
+
+
+🔗 n8n Arayüzüne Erişim
+Tarayıcınızdan şu adrese gidin:
+
+https://n8n.example.com
+
+
+📌 Notlar
+docker-compose-pg.yaml içinde PostgreSQL servisi yerleşik olarak bulunur. Harici veritabanına ihtiyaç yoktur.
+
+Traefik ile HTTPS bağlantılar otomatik olarak kurulur.
+
+Kurulum script'i Ubuntu/Debian tabanlı VPS'ler için test edilmiştir.
+
+
+🛠 Gereksinimler
+VPS (Ubuntu 20.04+ önerilir)
+
+Bir alan adı (örnek: example.com) ve alt alan adı (n8n.example.com) için A kaydı
+
+Port 80 ve 443 açık olmalı
