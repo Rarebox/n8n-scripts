@@ -24,7 +24,7 @@ cd ~/n8n-traefik
 
 # Dosyaları oluştur
 echo "📦 docker-compose.yaml oluşturuluyor..."
-wget https://raw.githubusercontent.com/YOUR_REPO/n8n-docker/main/docker-compose-pg.yaml -O docker-compose.yaml || echo "🚨 Lütfen docker-compose-pg.yaml'ı elle buraya ekleyin."
+wget https://raw.githubusercontent.com/Rarebox/n8n-scripts/master/docker-compose-pg.yaml -O docker-compose.yaml || echo "🚨 Lütfen docker-compose-pg.yaml'ı elle buraya ekleyin."
 
 echo "📝 .env dosyası oluşturuluyor..."
 cat > .env << 'EOL'
