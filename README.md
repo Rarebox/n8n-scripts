@@ -234,6 +234,11 @@ Bu rehber, kendi VPS sunucunuzda n8n'i Traefik reverse proxy ve PostgreSQL verit
 
 ### 1. Terminalden aşağıdaki komutu çalıştırın:
 
+“Docker ve Docker Compose’un kurulu olduğundan emin ol. Değilse hemen kuruyoruz:”
+
+curl -fsSL https://get.docker.com | bash
+sudo apt install docker-compose -y
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/Rarebox/n8n-scripts/master/n8n-pg-install.sh -o n8n-install.sh && chmod +x n8n-install.sh && ./n8n-install.sh
 
