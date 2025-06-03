@@ -29,6 +29,7 @@ sudo systemctl start docker
 sudo systemctl enable docker
 
 # Docker Compose kurulumu (v2 plugin)
+sudo mkdir -p /usr/local/lib/docker/cli-plugins
 sudo curl -SL https://github.com/docker/compose/releases/download/v2.30.1/docker-compose-linux-$(uname -m) -o /usr/local/lib/docker/cli-plugins/docker-compose
 sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
