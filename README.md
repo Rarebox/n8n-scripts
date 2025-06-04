@@ -224,70 +224,76 @@ By following this guide, you should have a working n8n installation with automat
 
 Türkçe Versiyon
 
-# 🧩 n8n + PostgreSQL + Traefik Kurulumu (Production Ready)
+# n8n + PostgreSQL + Traefik Otomatik Kurulum Scripti
 
-Bu rehber, kendi VPS sunucunuzda n8n'i Traefik reverse proxy ve PostgreSQL veritabanı ile birlikte tam otomatik olarak kurmanızı sağlar. SSL (HTTPS) otomatik olarak Let's Encrypt tarafından alınır.
+Bu depo, `n8n` uygulamasını PostgreSQL veritabanı ve Traefik reverse proxy ile birlikte hızlıca kurmak isteyenler için otomatik bir kurulum scripti sunar.
+
+## ✨ Özellikler
+
+* Tek komutla kurulum
+* Docker ve Docker Compose otomatik kurulumu
+* PostgreSQL kurulumu ve çevresel değişkenlerle özelleştirme
+* Traefik ile HTTPS (Let's Encrypt) desteği
+* UFW ile 80 ve 443 portlarını otomatik açma
 
 ---
 
-## 🚀 Kurulum
+## 🚀 Tek Komutla Kurulum
 
-### 1. Terminalden aşağıdaki komutu çalıştırın:
-
-“Docker ve Docker Compose’un kurulu olduğundan emin ol. Değilse hemen kuruyoruz:”
-
-curl -fsSL https://get.docker.com | bash
-sudo apt install docker-compose -y
+Aşağıdaki komut tek satırda scripti indirir, çalıştırılabilir yapar ve kurulumu başlatır:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/Rarebox/n8n-scripts/master/n8n-pg-install.sh -o n8n-install.sh && chmod +x n8n-install.sh && ./n8n-install.sh
+```
 
-⚙️ Kurulumdan Sonra
+---
 
-2. .env dosyasını düzenleyin
+## 📄 Script Ne Yapar?
 
-nano ~/n8n-traefik/.env
+1. Sistem paketlerini günceller
+2. Gerekli temel aracıları kurar: `curl`, `wget`, `git`
+3. Docker ve Docker Compose kurar
+4. UFW (güvenlik duvarı) kurar ve 22, 80, 443 portlarını açar
+5. `~/n8n-traefik` dizininde gerekli dosyaları oluşturur:
 
-Aşağıdaki değerleri kendi domain bilgilerinize göre güncelleyin:
+   * `docker-compose.yaml`
+   * `.env`
+6. PostgreSQL için sizden:
 
-DOMAIN_NAME=example.com
-SUBDOMAIN=n8n
-SSL_EMAIL=admin@example.com
-GENERIC_TIMEZONE=Europe/Istanbul
+   * Kullanıcı adı
+   * Şifre
+   * Veritabanı adı girmenizi ister
+7. Dilerseniz `.env` dosyasını düzenlemenizi sağlar
+8. Kurulumu tamamlar ve n8n servisini başlatma seçeneği sunar
 
-Bu ayarlarla n8n arayüzü şu adresten çalışacaktır: https://n8n.example.com
+---
 
-3. Servisleri başlatın
+## 📁 Dosyalar
 
+* `n8n-pg-install.sh`: Kurulum scripti
+* `docker-compose-pg.yaml`: Docker Compose yapılandırması (otomatik indirilir)
+
+---
+
+## ⚠️ Notlar
+
+* Kurulumdan önce `example.com` domain ayarlarını DNS tarafında doğru yapmalısınız.
+* Traefik, Let's Encrypt kullanarak SSL sertifikası alacaktır. Domain IP çözümlemesi yapılamazsa hata verir.
+* Script sadece Ubuntu tabanlı sistemler için uygundur.
+
+---
+
+## 🔧 Manuel Servis Başlatma
+
+Eğer script sonrasında n8n'i elle başlatmak isterseniz:
+
+```bash
 cd ~/n8n-traefik
 docker compose up -d
+```
 
-4. SSL durumu ve logları kontrol edin
+---
 
-docker compose logs -f traefik
+## ✉️ Geri Bildirim
 
-Aşağıdakine benzer bir satır görmelisiniz:
-
-Server configured with certificate for domain n8n.example.com
-
-
-🔗 n8n Arayüzüne Erişim
-Tarayıcınızdan şu adrese gidin:
-
-https://n8n.example.com
-
-
-📌 Notlar
-docker-compose-pg.yaml içinde PostgreSQL servisi yerleşik olarak bulunur. Harici veritabanına ihtiyaç yoktur.
-
-Traefik ile HTTPS bağlantılar otomatik olarak kurulur.
-
-Kurulum script'i Ubuntu/Debian tabanlı VPS'ler için test edilmiştir.
-
-
-🛠 Gereksinimler
-VPS (Ubuntu 20.04+ önerilir)
-
-Bir alan adı (örnek: example.com) ve alt alan adı (n8n.example.com) için A kaydı
-
-Port 80 ve 443 açık olmalı
+Herhangi bir sorun, iyileştirme önerisi veya katkı için lütfen bir [issue](https://github.com/Rarebox/n8n-scripts/issues) oluşturun veya PR gönderin.
